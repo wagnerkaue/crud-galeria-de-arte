@@ -108,17 +108,11 @@ function verGaleria() {
 
 // Adicionar quadro (mostra formulário)
 function mostrarFormulario() {
-  painel.innerHTML = `
-    <form onsubmit="adicionarQuadro(event)">
-      <input type="text" id="titulo" placeholder="Título" required>
-      <input type="text" id="autor" placeholder="Autor" required>
-      <input type="number" id="ano" placeholder="Ano" required>
-      <input type="text" id="periodo" placeholder="Período artístico" required>
-      <input type="text" id="pais" placeholder="País do artista" required>
-      <input type="text" id="imagem" placeholder="URL da imagem" required>
-      <button type="submit">Adicionar Quadro</button>
-    </form>
-  `;
+  const template = document.getElementById("formularioCriarTemplate");
+  const clone = template.content.cloneNode(true);
+  const painel = document.getElementById("painel");
+  painel.innerHTML = "";
+  painel.appendChild(clone);
 }
 
 // Adicionar novo quadro
