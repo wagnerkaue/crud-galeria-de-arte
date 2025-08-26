@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Galeria de Arte</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Galeria de Arte</h1>
+
+  <div class="controles">
+  <button onclick="verGaleria()">👁️ Ver Galeria</button>
+  <button onclick="mostrarFormulario()">➕ Adicionar Quadro</button>
+
+   <select id="filtroArtista" onchange="filtrar()">
+  <option value="">Todos os artistas</option>
+</select>
+
+<select id="filtroPeriodo" onchange="filtrar()">
+  <option value="">Todos os períodos</option>
+</select>
+
+  <select id="ordenar">
+    <option value="">Ordenar</option>
+    <option value="alfabetica">Ordem Alfabética</option>
+    <option value="ano">Ordem por Ano</option>
+    <option value="pais">Ordem por País</option>
+  </select>
+
+  <button onclick="filtrar()">Filtrar</button>
+  <button onclick="limparFiltros()">Limpar</button>
+  <button onclick="contarQuadros()">Contar Quadros</button>
+
+</div>
+
+
+
+  <div id="painel" class="galeria"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

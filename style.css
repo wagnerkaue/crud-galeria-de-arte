@@ -1,0 +1,93 @@
+/* Estilo do corpo */
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f0f0;
+  margin: 20px;
+}
+
+/* Título centralizado */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Controles (botões, selects) */
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.controles input,
+.controles select,
+.controles button {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  font-size: 14px;
+}
+
+.controles button {
+  background: #4CAF50;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.controles button:hover {
+  background: #45a049;
+}
+
+/* Galeria com layout Masonry usando colunas */
+.galeria {
+  columns: 4; /* Define 4 colunas */
+  column-gap: 25px; /* Adiciona o espaçamento entre as colunas */
+  
+
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  /* Isso é crucial para evitar quebras de card */
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 20px; /* Adiciona espaçamento na parte de baixo de cada card */
+}
+  
+.card strong {
+  margin-bottom: 5px; /* Diminui o espaço entre o título e a imagem */
+  display: block; /* Garante que o strong se comporte como um bloco para a margem */
+}
+
+.card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 5px; /* Diminui o espaço entre a imagem e o autor */
+}
+
+.card p {
+  margin: 2px 0; /* Diminui o espaço acima e abaixo dos parágrafos (autor e período) */
+  font-size: 0.9em; /* Opcional: pode diminuir um pouco o tamanho da fonte para economizar espaço */
+  color: #555; /* Opcional: torna o texto um pouco mais claro */
+}
+
+/* Formulário de adicionar quadro */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  max-width: 300px;
+  margin: 0 auto 20px auto;
+}
