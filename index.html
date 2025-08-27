@@ -2,54 +2,103 @@
 <html lang="pt-BR">
 
 <head>
-   
   <meta charset="UTF-8">
-    <title>Galeria de Arte</title>
-   
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galeria de Arte Interativa</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+
+  <header>
     <h1>Galeria de Arte</h1>
+  </header>
 
-    <div class="controles">
-        <button id="mostrarFormularioBotao">➕ Adicionar Quadro</button>
-
-        <select id="filtroArtista">
-            <option value="">Todos os artistas</option>
-          </select>
-
-        <select id="filtroPeriodo">
-            <option value="">Todos os períodos</option>
-          </select>
-
-        <select id="ordenar">
-            <option value="alfabetica">Ordem Alfabética</option>
-            <option value="ano">Ordem por Ano</option>
-            <option value="pais">Ordem por País</option>
-          </select>
-
-        <button id="limparFiltrosBotao">Limpar</button>
-        <button id="contarQuadrosBotao">Contar Quadros</button>
+  <main>
+    <section class="controles">
+      <div class="grupo-filtro">
+        <label for="filtroArtista">Artista:</label>
+        <select id="filtroArtista"></select>
       </div>
+      <div class="grupo-filtro">
+        <label for="filtroPeriodo">Período:</label>
+        <select id="filtroPeriodo"></select>
+      </div>
+      <div class="grupo-filtro">
+        <label for="ordenarPor">Ordenar por:</label>
+        <select id="ordenarPor">
+          <option value="dataCriacao_desc">Data de criação (Recente)</option>
+          <option value="titulo_asc">Título (A-Z)</option>
+          <option value="ano_asc">Ano (Crescente)</option>
+          <option value="pais_asc">País (A-Z)</option>
+        </select>
+      </div>
+      <div class="grupo-botoes">
+        <button id="botaoAdicionarObra">Adicionar Quadro</button>
+        <button id="botaoLimparFiltros">Limpar Filtros</button>
+        <button id="botaoCarregarObrasIniciais">Carregar Obras Iniciais</button>
+        <button id="botaoLimparGaleria" class="botao-perigo">Esvaziar Galeria</button>
+      </div>
+    </section>
 
-    <template id="formularioCriarTemplate">
-        <form>
-            <input type="text" id="titulo" placeholder="Título" required>
-            <input type="text" id="autor" placeholder="Autor" required>
-            <input type="number" id="ano" placeholder="Ano" required>
-            <input type="text" id="periodo" placeholder="Período artístico" required>
-            <input type="text" id="pais" placeholder="País do artista" required>
-            <input type="text" id="imagem" placeholder="URL da imagem" required>
-            <button type="submit">Adicionar Quadro</button>
-          </form>
-      </template>
+    <section id="painelGaleria" class="painel-galeria"></section>
+  </main>
 
-    <div id="painel" class="galeria"></div>
+  <template id="templateCartao">
+    <div class="cartao">
+      <img src="https://placehold.co/600x400/222/fff?text=Arte" alt="Imagem da obra de arte" class="cartao-imagem">
+      <div class="cartao-corpo">
+        <h3 class="cartao-titulo"></h3>
+        <p class="cartao-info"></p>
+        <p class="cartao-periodo-pais"></p>
+        <div class="cartao-botoes">
+          <button class="botao-editar">Editar</button>
+          <button class="botao-deletar">Deletar</button>
+        </div>
+      </div>
+    </div>
+  </template>
 
-   
-  <script src="script.js"></script>
+  <template id="templateFormulario">
+    <div class="container-formulario">
+      <form>
+        <h2 id="tituloFormulario">Adicionar Novo Quadro</h2>
+        <div class="grupo-formulario">
+          <label for="titulo">Título:</label>
+          <input type="text" id="titulo" name="titulo" required>
+        </div>
+        <div class="grupo-formulario">
+          <label for="autor">Autor:</label>
+          <input type="text" id="autor" name="autor" required>
+        </div>
+        <div class="grupo-formulario">
+          <label for="ano">Ano:</label>
+          <input type="number" id="ano" name="ano" required>
+        </div>
+        <div class="grupo-formulario">
+          <label for="periodo">Período:</label>
+          <input type="text" id="periodo" name="periodo" required>
+        </div>
+        <div class="grupo-formulario">
+          <label for="pais">País:</label>
+          <input type="text" id="pais" name="pais" required>
+        </div>
+        <div class="grupo-formulario">
+          <label for="imagem">URL da Imagem:</label>
+          <input type="url" id="imagem" name="imagem" required>
+        </div>
+        <div class="formulario-botoes">
+          <button type="submit" id="botaoSalvar">Salvar Quadro</button>
+          <button type="button" id="botaoCancelar">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </template>
 
+  <script src="main.js" type="module"></script>
 </body>
 
 </html>

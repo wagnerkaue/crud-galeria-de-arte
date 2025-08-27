@@ -1,93 +1,213 @@
-/* Estilo do corpo */
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2c3e50;
+  --background-color: #ecf0f1;
+  --surface-color: #ffffff;
+  --text-color: #34495e;
+  --danger-color: #e74c3c;
+  --danger-hover-color: #c0392b;
+  --border-radius: 8px;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition-speed: 0.3s ease;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background: #f0f0f0;
-  margin: 20px;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
 }
 
-/* Título centralizado */
+header {
+  background-color: var(--secondary-color);
+  color: var(--surface-color);
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
 h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+  margin: 0;
+  font-weight: 700;
 }
 
-/* Controles (botões, selects) */
+main {
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .controles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  background-color: var(--surface-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem;
+  align-items: end;
 }
 
-.controles input,
-.controles select,
-.controles button {
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #aaa;
-  font-size: 14px;
-}
-
-.controles button {
-  background: #4CAF50;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s;
-}
-
-.controles button:hover {
-  background: #45a049;
-}
-
-/* Galeria com layout Masonry usando colunas */
-.galeria {
-  columns: 4; /* Define 4 colunas */
-  column-gap: 25px; /* Adiciona o espaçamento entre as colunas */
-  
-
-}
-
-.card {
-  background: white;
-  border-radius: 8px;
-  padding: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  text-align: center;
-  /* Isso é crucial para evitar quebras de card */
-  display: inline-block;
-  width: 100%;
-  margin-bottom: 20px; /* Adiciona espaçamento na parte de baixo de cada card */
-}
-  
-.card strong {
-  margin-bottom: 5px; /* Diminui o espaço entre o título e a imagem */
-  display: block; /* Garante que o strong se comporte como um bloco para a margem */
-}
-
-.card img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 6px;
-  margin-bottom: 5px; /* Diminui o espaço entre a imagem e o autor */
-}
-
-.card p {
-  margin: 2px 0; /* Diminui o espaço acima e abaixo dos parágrafos (autor e período) */
-  font-size: 0.9em; /* Opcional: pode diminuir um pouco o tamanho da fonte para economizar espaço */
-  color: #555; /* Opcional: torna o texto um pouco mais claro */
-}
-
-/* Formulário de adicionar quadro */
-form {
+.grupo-filtro {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  background: white;
-  padding: 15px;
-  border-radius: 8px;
-  max-width: 300px;
-  margin: 0 auto 20px auto;
+}
+
+.grupo-botoes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  grid-column: span 2;
+}
+
+label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+select,
+input[type="text"],
+input[type="number"],
+input[type="url"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #bdc3c7;
+  border-radius: var(--border-radius);
+  background-color: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+  box-sizing: border-box;
+}
+
+select:focus,
+input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--primary-color);
+  color: white;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color var(--transition-speed), transform var(--transition-speed);
+  font-weight: 500;
+}
+
+button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+.botao-perigo {
+  background-color: var(--danger-color);
+}
+
+.botao-perigo:hover {
+  background-color: var(--danger-hover-color);
+}
+
+.painel-galeria {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.cartao {
+  background-color: var(--surface-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.cartao:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cartao-imagem {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  background-color: #fff;
+}
+
+.cartao-corpo {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.cartao-titulo {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  color: var(--secondary-color);
+}
+
+.cartao-info,
+.cartao-periodo-pais {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.cartao-botoes {
+  margin-top: auto;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cartao-botoes button {
+  flex-grow: 1;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  background-color: var(--secondary-color);
+}
+
+.cartao-botoes .botao-deletar {
+  background-color: #7f8c8d;
+}
+
+.cartao-botoes .botao-deletar:hover {
+  background-color: var(--secondary-color);
+}
+
+.container-formulario {
+  background-color: var(--surface-color);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.grupo-formulario {
+  margin-bottom: 1rem;
+}
+
+.formulario-botoes {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.mensagem-galeria-vazia {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: #7f8c8d;
 }
