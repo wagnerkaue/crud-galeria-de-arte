@@ -97,6 +97,7 @@ function confirmarDeletarObra(idObra) {
 function resetarSelecoes() {
     selecaoFiltroArtista.value = "";
     selecaoFiltroPeriodo.value = "";
+    selecaoFiltroPais.value = "";
     selecaoOrdenarPor.value = "dataCriacao";
     direcaoOrdenacao = 'decrescente';
     botaoDirecao.textContent = '↓';
