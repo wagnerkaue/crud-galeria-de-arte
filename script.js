@@ -1,4 +1,6 @@
-let quadros = [
+// @ts-check
+
+const quadrosRegistrados = [
   {titulo: "Mona Lisa", autor: "Leonardo da Vinci", ano: 1503, periodo: "Renascentista", pais: "Itália", imagem: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg"},
   {titulo: "A Noite Estrelada", autor: "Vincent van Gogh", ano: 1889, periodo: "Pós-Impressionismo", pais: "Holanda", imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/1280px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg"},
   {titulo: "O Nascimento de Vênus", autor: "Sandro Botticelli", ano: 1486, periodo: "Renascentista", pais: "Itália", imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg/1920px-Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg"},
@@ -27,12 +29,92 @@ let quadros = [
   {titulo: "Nighthawks", autor: "Edward Hopper", ano: 1942, periodo: "Realismo Moderno", pais: "Estados Unidos", imagem: "https://upload.wikimedia.org/wikipedia/commons/a/a8/Nighthawks_by_Edward_Hopper_1942.jpg"},
 ];
 
-
+// Constantes do documento
 const painel = document.getElementById("painel");
+const selectArtista = document.getElementById("filtroArtista");
+const selectPeriodo = document.getElementById("filtroPeriodo");
+const ordenacaoSelect = document.getElementById("ordenar");
+const formularioTemplate = document.getElementById("formularioCriarTemplate");
 
-function renderizar(lista = quadros) {
+// Botões
+const mostrarFormularioBotao = document.getElementById("mostrarFormularioBotao");
+const limparFiltrosBotao = document.getElementById("limparFiltrosBotao");
+const contarQuadrosBotao = document.getElementById("contarQuadrosBotao");
+
+
+// Funções
+
+/** Filtra quadros por um artista específico. */
+function filtrarPorArtista(quadros, artista) {
+  return quadros.filter(quadro => quadro.autor === artista);
+}
+
+/** Filtra quadros por um período específico. */
+function filtrarPorPeriodo(quadros, periodo) {
+  return quadros.filter(quadro => quadro.periodo === periodo);
+}
+
+/** Reordena os quadros com base no critério de ordenação. */
+function reordenarQuadros(quadros, ordenacao) {
+  const quadrosCopiados = [...quadros];
+
+  const funcoesDeOrdenacao = {
+    "alfabetica": (a, b) => a.titulo.localeCompare(b.titulo),
+    "ano": (a, b) => a.ano - b.ano,
+    "pais": (a, b) => a.pais.localeCompare(b.pais),
+  };
+
+  const funcaoOrdenacao = funcoesDeOrdenacao[ordenacao];
+  return funcaoOrdenacao ? quadrosCopiados.sort(funcaoOrdenacao) : quadrosCopiados;
+}
+
+function limparSelect(selectElement, textoPadrao) {
+  // Cria a opção padrão primeiro
+  const optionPadrao = document.createElement('option');
+  optionPadrao.textContent = textoPadrao;
+  optionPadrao.value = "";
+
+  // Substitui todos os filhos existentes pela nova opção padrão
+  selectElement.replaceChildren(optionPadrao);
+}
+
+/** Preenche os selects de filtro com base nos quadros registrados. */
+function preencherFiltros() {
+  // Limpar opções antigas
+  limparSelect(selectArtista, "Todos os artistas");
+  limparSelect(selectPeriodo, "Todos os períodos");
+  const artistas = [...new Set(quadrosRegistrados.map(q => q.autor))].sort();
+  const periodos = [...new Set(quadrosRegistrados.map(q => q.periodo))].sort();
+
+  artistas.forEach(artista => {
+    const option = new Option(artista, artista);
+    selectArtista.appendChild(option);
+  });
+
+  periodos.forEach(periodo => {
+    const option = new Option(periodo, periodo);
+    selectPeriodo.appendChild(option);
+  });
+}
+
+/** Renderiza a galeria na tela com base nos filtros e ordenação atuais. */
+function renderizar() {
+  let quadrosFiltrados = [...quadrosRegistrados];
+  const artistaSelecionado = selectArtista.value;
+  const periodoSelecionado = selectPeriodo.value;
+  const ordenacaoSelecionada = ordenacaoSelect.value;
+
+  if (artistaSelecionado) {
+    quadrosFiltrados = filtrarPorArtista(quadrosFiltrados, artistaSelecionado);
+  }
+  if (periodoSelecionado) {
+    quadrosFiltrados = filtrarPorPeriodo(quadrosFiltrados, periodoSelecionado);
+  }
+
+  const quadrosOrdenados = reordenarQuadros(quadrosFiltrados, ordenacaoSelecionada);
+
   painel.innerHTML = "";
-  lista.forEach(q => {
+  quadrosOrdenados.forEach(q => {
     const div = document.createElement("div");
     div.className = "card";
     div.innerHTML = `
@@ -45,96 +127,62 @@ function renderizar(lista = quadros) {
   });
 }
 
-// Preencher filtros automaticamente
-function preencherFiltros() {
-  const selectArtista = document.getElementById("filtroArtista");
-  const selectPeriodo = document.getElementById("filtroPeriodo");
-
-  // Limpar opções antigas
-  selectArtista.innerHTML = '<option value="">Todos os artistas</option>';
-  selectPeriodo.innerHTML = '<option value="">Todos os períodos</option>';
-
-  // Criar listas únicas de artistas e períodos
-  const artistas = [...new Set(quadros.map(q => q.autor))];
-  const periodos = [...new Set(quadros.map(q => q.periodo))];
-
-  // Preencher artistas
-  artistas.forEach(a => {
-    const option = document.createElement("option");
-    option.value = a;
-    option.textContent = a;
-    selectArtista.appendChild(option);
-  });
-
-  // Preencher períodos
-  periodos.forEach(p => {
-    const option = document.createElement("option");
-    option.value = p;
-    option.textContent = p;
-    selectPeriodo.appendChild(option);
-  });
-}
-
-// Filtrar quadros
-function filtrar() {
-  const artista = document.getElementById("filtroArtista").value;
-  const periodo = document.getElementById("filtroPeriodo").value;
-  const ordenacao = document.getElementById("ordenar").value;
-
-  let lista = [...quadros];
-
-  if (artista) lista = lista.filter(q => q.autor === artista);
-  if (periodo) lista = lista.filter(q => q.periodo === periodo);
-
-  if (ordenacao === "alfabetica") lista.sort((a,b) => a.titulo.localeCompare(b.titulo));
-  else if (ordenacao === "ano") lista.sort((a,b) => a.ano - b.ano);
-  else if (ordenacao === "pais") lista.sort((a,b) => a.pais.localeCompare(b.pais));
-
-  renderizar(lista);
-}
-
-// Limpar filtros
+/** Limpa os filtros e renderiza a galeria novamente. */
 function limparFiltros() {
-  document.getElementById("filtroArtista").value = "";
-  document.getElementById("filtroPeriodo").value = "";
-  document.getElementById("ordenar").value = "";
+  selectArtista.value = "";
+  selectPeriodo.value = "";
+  ordenacaoSelect.value = "alfabetica";
   renderizar();
 }
 
-// Mostrar galeria completa
-function verGaleria() {
-  renderizar();
+/** Exibe um alerta com o número total de quadros. */
+function contarQuadros() {
+  alert(`Total de quadros na galeria: ${quadrosRegistrados.length}`);
 }
 
-// Adicionar quadro (mostra formulário)
+/** Exibe o formulário para adicionar um novo quadro. */
 function mostrarFormulario() {
-  const template = document.getElementById("formularioCriarTemplate");
-  const clone = template.content.cloneNode(true);
-  const painel = document.getElementById("painel");
+  const clone = formularioTemplate.content.cloneNode(true);
   painel.innerHTML = "";
   painel.appendChild(clone);
+  
+  // Adiciona o listener para o formulário que acabou de ser criado
+  const form = painel.querySelector("form");
+  form.addEventListener("submit", adicionarQuadro);
 }
 
-// Adicionar novo quadro
+/** Adiciona um novo quadro à lista, vindo do formulário. */
 function adicionarQuadro(event) {
   event.preventDefault();
-  const titulo = document.getElementById("titulo").value;
-  const autor = document.getElementById("autor").value;
-  const ano = parseInt(document.getElementById("ano").value);
-  const periodo = document.getElementById("periodo").value;
-  const pais = document.getElementById("pais").value;
-  const imagem = document.getElementById("imagem").value;
+  const form = event.target;
+  
+  const novoQuadro = {
+    titulo: form.querySelector("#titulo").value,
+    autor: form.querySelector("#autor").value,
+    ano: parseInt(form.querySelector("#ano").value, 10),
+    periodo: form.querySelector("#periodo").value,
+    pais: form.querySelector("#pais").value,
+    imagem: form.querySelector("#imagem").value,
+  };
 
-  quadros.push({titulo, autor, ano, periodo, pais, imagem});
-  preencherFiltros(); // Atualiza filtros com novos dados
-  renderizar();
+  quadrosRegistrados.push(novoQuadro);
+  preencherFiltros(); // Atualiza os filtros com os novos dados
+  renderizar(); // Renderiza a galeria com o quadro novo
 }
 
-// Contar quadros
-function contarQuadros() {
-  alert(`Total de quadros na galeria: ${quadros.length}`);
-}
 
-// Inicializar filtros ao carregar a página
+// --- INICIALIZAÇÃO E EVENT LISTENERS ---
+
+// Adiciona os listeners de eventos para os controles
+mostrarFormularioBotao.addEventListener("click", mostrarFormulario);
+limparFiltrosBotao.addEventListener("click", limparFiltros);
+contarQuadrosBotao.addEventListener("click", contarQuadros);
+
+selectArtista.addEventListener("change", renderizar);
+selectPeriodo.addEventListener("change", renderizar);
+ordenacaoSelect.addEventListener("change", renderizar);
+
+
+// Inicializa a aplicação ao carregar a página
 preencherFiltros();
 renderizar();
