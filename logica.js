@@ -1,4 +1,4 @@
-export function organizarObras(obras, { artistaFiltro, periodoFiltro, ordenarPor, direcao = 'crescente' }) {
+export function organizarObras(obras, { artistaFiltro, periodoFiltro, paisFiltro, ordenarPor, direcao = 'crescente' }) {
     let obrasFiltradas = [...obras];
 
     if (artistaFiltro) {
@@ -9,11 +9,14 @@ export function organizarObras(obras, { artistaFiltro, periodoFiltro, ordenarPor
         obrasFiltradas = obrasFiltradas.filter(obra => obra.periodo === periodoFiltro);
     }
 
+    if (paisFiltro) {
+        obrasFiltradas = obrasFiltradas.filter(obra => obra.pais === paisFiltro);
+    }
+
     const obrasOrdenadas = obrasFiltradas.toSorted((a, b) => {
         const campo = ordenarPor === 'dataCriacao' ? 'id' : ordenarPor;
         const valorA = a[campo];
         const valorB = b[campo];
-        // A única mudança é nesta linha
         const multiplicador = direcao === 'crescente' ? 1 : -1;
 
         if (typeof valorA === 'string') {

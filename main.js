@@ -6,6 +6,7 @@ import { organizarObras } from './logica.js';
 const painelGaleria = document.getElementById("painelGaleria");
 const selecaoFiltroArtista = document.getElementById("filtroArtista");
 const selecaoFiltroPeriodo = document.getElementById("filtroPeriodo");
+const selecaoFiltroPais = document.getElementById("filtroPais")
 const selecaoOrdenarPor = document.getElementById("ordenarPor");
 const botaoDirecao = document.getElementById("botaoDirecao");
 const botaoAdicionarObra = document.getElementById("botaoAdicionarObra");
@@ -23,7 +24,7 @@ function atualizarFiltros() {
 
     ui.preencherSelect(selecaoFiltroArtista, estado.obterValoresUnicos('autor'), "Todos os artistas");
     ui.preencherSelect(selecaoFiltroPeriodo, estado.obterValoresUnicos('periodo'), "Todos os períodos");
-
+    ui.preencherSelect(selecaoFiltroPais, estado.obterValoresUnicos('pais'), "Todos os países");
     selecaoFiltroArtista.value = artistaSelecionado;
     selecaoFiltroPeriodo.value = periodoSelecionado;
 }
@@ -34,6 +35,7 @@ function atualizarUI() {
     const filtradasEOrdenadas = organizarObras(todasObras, {
         artistaFiltro: selecaoFiltroArtista.value,
         periodoFiltro: selecaoFiltroPeriodo.value,
+        paisFiltro: selecaoFiltroPais.value,
         ordenarPor: selecaoOrdenarPor.value,
         direcao: direcaoOrdenacao,
     });
@@ -144,6 +146,7 @@ document.addEventListener('click', (evento) => {
 function inicializar() {
     selecaoFiltroArtista.addEventListener("change", atualizarUI);
     selecaoFiltroPeriodo.addEventListener("change", atualizarUI);
+    selecaoFiltroPais.addEventListener("change", atualizarUI);
     selecaoOrdenarPor.addEventListener("change", atualizarUI);
     botaoDirecao.addEventListener("click", alternarDirecaoOrdenacao);
     botaoAdicionarObra.addEventListener("click", abrirFormularioDeAdicionarObra);
