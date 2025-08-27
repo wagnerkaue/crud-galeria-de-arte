@@ -29,12 +29,15 @@
       </div>
       <div class="grupo-filtro">
         <label for="ordenarPor">Ordenar por:</label>
-        <select id="ordenarPor">
-          <option value="dataCriacao_desc">Data de criação (Recente)</option>
-          <option value="titulo_asc">Título (A-Z)</option>
-          <option value="ano_asc">Ano (Crescente)</option>
-          <option value="pais_asc">País (A-Z)</option>
-        </select>
+        <div class="grupo-ordenacao">
+          <select id="ordenarPor">
+            <option value="dataCriacao">Data de criação</option>
+            <option value="titulo">Título</option>
+            <option value="ano">Ano</option>
+            <option value="pais">País</option>
+          </select>
+          <button id="botaoDirecao" title="Alternar ordem">↓</button>
+        </div>
       </div>
       <div class="grupo-botoes">
         <button id="botaoAdicionarObra">Adicionar Quadro</button>

@@ -7,12 +7,15 @@ const painelGaleria = document.getElementById("painelGaleria");
 const selecaoFiltroArtista = document.getElementById("filtroArtista");
 const selecaoFiltroPeriodo = document.getElementById("filtroPeriodo");
 const selecaoOrdenarPor = document.getElementById("ordenarPor");
+const botaoDirecao = document.getElementById("botaoDirecao");
 const botaoAdicionarObra = document.getElementById("botaoAdicionarObra");
 const botaoLimparFiltros = document.getElementById("botaoLimparFiltros");
 const botaoCarregarObrasIniciais = document.getElementById("botaoCarregarObrasIniciais");
 const botaoLimparGaleria = document.getElementById("botaoLimparGaleria");
 const templateCartao = document.getElementById("templateCartao");
 const templateFormulario = document.getElementById("templateFormulario");
+
+let direcaoOrdenacao = 'decrescente';
 
 function atualizarFiltros() {
     const artistaSelecionado = selecaoFiltroArtista.value;
@@ -32,9 +35,18 @@ function atualizarUI() {
         artistaFiltro: selecaoFiltroArtista.value,
         periodoFiltro: selecaoFiltroPeriodo.value,
         ordenarPor: selecaoOrdenarPor.value,
+        direcao: direcaoOrdenacao,
     });
 
     ui.renderizarGaleria(painelGaleria, templateCartao, filtradasEOrdenadas);
+}
+
+function alternarDirecaoOrdenacao() {
+    direcaoOrdenacao = direcaoOrdenacao === 'crescente' ? 'decrescente' : 'crescente';
+    botaoDirecao.textContent = direcaoOrdenacao === 'crescente' ? '↑' : '↓';
+    const direcaoTexto = direcaoOrdenacao;
+    botaoDirecao.title = `Alternar para ordem ${direcaoTexto}`;
+    atualizarUI();
 }
 
 function abrirFormularioDeAdicionarObra() {
@@ -83,7 +95,9 @@ function confirmarDeletarObra(idObra) {
 function resetarSelecoes() {
     selecaoFiltroArtista.value = "";
     selecaoFiltroPeriodo.value = "";
-    selecaoOrdenarPor.value = "dataCriacao_desc";
+    selecaoOrdenarPor.value = "dataCriacao";
+    direcaoOrdenacao = 'decrescente';
+    botaoDirecao.textContent = '↓';
     atualizarUI();
 }
 
@@ -131,6 +145,7 @@ function inicializar() {
     selecaoFiltroArtista.addEventListener("change", atualizarUI);
     selecaoFiltroPeriodo.addEventListener("change", atualizarUI);
     selecaoOrdenarPor.addEventListener("change", atualizarUI);
+    botaoDirecao.addEventListener("click", alternarDirecaoOrdenacao);
     botaoAdicionarObra.addEventListener("click", abrirFormularioDeAdicionarObra);
     botaoLimparFiltros.addEventListener("click", resetarSelecoes);
     botaoCarregarObrasIniciais.addEventListener("click", carregarObrasIniciais);

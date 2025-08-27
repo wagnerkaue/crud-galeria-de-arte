@@ -1,11 +1,4 @@
-const funcaoOrdenacao = {
-    'dataCriacao_desc': (a, b) => b.id - a.id,
-    'titulo_asc': (a, b) => a.titulo.localeCompare(b.titulo),
-    'ano_asc': (a, b) => a.ano - b.ano,
-    'pais_asc': (a, b) => a.pais.localeCompare(b.pais),
-};
-
-export function organizarObras(obras, { artistaFiltro, periodoFiltro, ordenarPor }) {
+export function organizarObras(obras, { artistaFiltro, periodoFiltro, ordenarPor, direcao = 'crescente' }) {
     let obrasFiltradas = [...obras];
 
     if (artistaFiltro) {
@@ -16,8 +9,21 @@ export function organizarObras(obras, { artistaFiltro, periodoFiltro, ordenarPor
         obrasFiltradas = obrasFiltradas.filter(obra => obra.periodo === periodoFiltro);
     }
 
-    const funcaoOrd = funcaoOrdenacao[ordenarPor] || funcaoOrdenacao['dataCriacao_desc'];
-    const obrasOrdenadas = obrasFiltradas.toSorted(funcaoOrd);
+    const obrasOrdenadas = obrasFiltradas.toSorted((a, b) => {
+        const campo = ordenarPor === 'dataCriacao' ? 'id' : ordenarPor;
+        const valorA = a[campo];
+        const valorB = b[campo];
+        // A única mudança é nesta linha
+        const multiplicador = direcao === 'crescente' ? 1 : -1;
+
+        if (typeof valorA === 'string') {
+            return valorA.localeCompare(valorB) * multiplicador;
+        }
+        if (typeof valorA === 'number') {
+            return (valorA - valorB) * multiplicador;
+        }
+        return 0;
+    });
 
     return obrasOrdenadas;
 }
