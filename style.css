@@ -1,13 +1,30 @@
+/* ---------------- Tema Claro ---------------- */
 :root {
-  --primary-color: #3498db;
-  --secondary-color: #2c3e50;
-  --background-color: #ecf0f1;
+  --primary-color: #374ed4;
+  --primary-hover: #a67b55;
+  --secondary-color: #2c2c2c;
+  --background-color: #f6f5f3;
   --surface-color: #ffffff;
-  --text-color: #34495e;
+  --text-color: #333333;
   --danger-color: #e74c3c;
   --danger-hover-color: #c0392b;
-  --border-radius: 8px;
-  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --border-radius: 12px;
+  --shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  --transition-speed: 0.3s ease;
+}
+
+/* ---------------- Tema Escuro ---------------- */
+.dark-theme {
+  --primary-color: #374ed4;
+  --primary-hover: #b8962e;
+  --secondary-color: #f0f0f0;
+  --background-color: #1c1c1c;
+  --surface-color: #2b2b2b;
+  --text-color: #e0e0e0;
+  --danger-color: #e74c3c;
+  --danger-hover-color: #c0392b;
+  --border-radius: 12px;
+  --shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
   --transition-speed: 0.3s ease;
 }
 
@@ -19,25 +36,85 @@ body {
   line-height: 1.6;
 }
 
+/* ---------------- Header ---------------- */
 header {
-  background-color: var(--secondary-color);
-  color: var(--surface-color);
-  padding: 1.5rem;
-  text-align: center;
+  display: flex;
+  justify-content: space-between; /* título à esquerda, botão à direita */
+  align-items: center;
+  background: linear-gradient(135deg, #111, #222);
+  color: var(--primary-color);
+  padding: 1.5rem 2rem;
   box-shadow: var(--shadow);
+  border-bottom: 3px solid var(--primary-color);
 }
 
-h1 {
+header h1 {
   margin: 0;
   font-weight: 700;
+  font-size: 2.3rem;
+  letter-spacing: 2px;
 }
 
+#toggleTema {
+  background: none;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+}
+
+#toggleTema:hover {
+  background: var(--primary-color);
+  color: #111;
+}
+
+/* ---------------- Controles no tema escuro ---------------- */
+.dark-theme .controles {
+  background-color: #262626;   /* cinza grafite */
+  border: 1px solid #333;
+}
+
+.dark-theme select,
+.dark-theme input[type="text"],
+.dark-theme input[type="number"],
+.dark-theme input[type="url"] {
+  background-color: #1e1e1e;
+  border: 1px solid #444;
+  color: var(--text-color);
+}
+
+.dark-theme label {
+  color: var(--primary-color);
+}
+
+/* ---------------- Botão Editar no tema escuro ---------------- */
+.dark-theme .cartao-botoes .botao-editar {
+  background-color: var(--primary-color);
+  color: #111; /* contraste com dourado */
+  font-weight: 600;
+}
+
+/* Informações do popup no modo escuro */
+.dark-theme .popup-info p,
+.dark-theme .popup-info h2 {
+  color: #ffffff;
+}
+
+.dark-theme .cartao-botoes .botao-editar:hover {
+  background-color: var(--primary-hover);
+}
+
+/* ---------------- Layout ---------------- */
 main {
-  padding: 1.5rem;
-  max-width: 1200px;
+  padding: 2rem;
+  max-width: 1300px;
   margin: 0 auto;
 }
 
+/* ---------------- Controles ---------------- */
 .controles {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -46,7 +123,7 @@ main {
   padding: 1.5rem;
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   align-items: end;
 }
 
@@ -57,16 +134,16 @@ main {
 
 .grupo-botoes {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.7rem;
   justify-content: flex-start;
   grid-column: span 2;
 }
 
 label {
   margin-bottom: 0.5rem;
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--secondary-color);
 }
 
 select,
@@ -74,11 +151,10 @@ input[type="text"],
 input[type="number"],
 input[type="url"] {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #bdc3c7;
+  padding: 0.7rem 1rem;
+  border: 1px solid #ccc;
   border-radius: var(--border-radius);
   background-color: #fff;
-  font-family: inherit;
   font-size: 1rem;
   transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
   box-sizing: border-box;
@@ -88,25 +164,27 @@ select:focus,
 input:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  box-shadow: 0 0 0 3px rgba(195, 155, 119, 0.3);
 }
 
+/* ---------------- Botões ---------------- */
 button {
-  padding: 0.75rem 1.5rem;
+  padding: 0.7rem 1.4rem;
   border: none;
   border-radius: var(--border-radius);
   background-color: var(--primary-color);
   color: white;
-  font-family: inherit;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color var(--transition-speed), transform var(--transition-speed);
-  font-weight: 500;
+  transition: all var(--transition-speed);
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 button:hover {
-  background-color: #2980b9;
+  background-color: var(--primary-hover);
   transform: translateY(-2px);
+  box-shadow: var(--shadow);
 }
 
 .botao-perigo {
@@ -117,10 +195,11 @@ button:hover {
   background-color: var(--danger-hover-color);
 }
 
+/* ---------------- Galeria ---------------- */
 .painel-galeria {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
 }
 
 .cartao {
@@ -131,22 +210,24 @@ button:hover {
   display: flex;
   flex-direction: column;
   transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+  border: 2px solid transparent;
 }
 
 .cartao:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
 }
 
 .cartao-imagem {
   width: 100%;
-  height: 200px;
-  object-fit: contain;
+  height: 220px;
+  object-fit: cover;
   background-color: #fff;
 }
 
 .cartao-corpo {
-  padding: 1rem;
+  padding: 1.2rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -154,14 +235,15 @@ button:hover {
 
 .cartao-titulo {
   margin: 0 0 0.5rem 0;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   color: var(--secondary-color);
 }
 
 .cartao-info,
 .cartao-periodo-pais {
   margin: 0 0 0.5rem 0;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  color: #ffffff;
 }
 
 .cartao-botoes {
@@ -185,6 +267,7 @@ button:hover {
   background-color: var(--secondary-color);
 }
 
+/* ---------------- Formulário ---------------- */
 .container-formulario {
   background-color: var(--surface-color);
   padding: 2rem;
@@ -205,7 +288,7 @@ button:hover {
   justify-content: flex-end;
 }
 
-.mensagem-galeria-vazia {
+.mensagem-vazia {
   text-align: center;
   padding: 3rem;
   font-size: 1.2rem;
@@ -219,8 +302,131 @@ button:hover {
 }
 
 #botaoDirecao {
-  padding: 0.75rem;
+  padding: 0.7rem;
   flex-shrink: 0;
   line-height: 1;
   width: 45px;
+}
+
+/* ---------------- Popups ---------------- */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s;
+}
+
+.popup-overlay.is-active {
+    opacity: 1;
+    visibility: visible;
+    background-color: rgba(0, 0, 0, 0.7);
+    transition: opacity 0.3s ease-in-out;
+}
+
+.popup-visualizacao,
+.formulario-popup {
+    position: relative;
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 650px;
+    max-height: 85vh;
+    overflow: auto;
+    transform: translateY(-50px) scale(0.9);
+    opacity: 0;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.popup-overlay.is-active .popup-visualizacao,
+.popup-overlay.is-active .formulario-popup {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.popup-fechar {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--secondary-color);
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: color var(--transition-speed);
+}
+
+.popup-fechar:hover {
+    color: var(--primary-color);
+}
+
+.popup-conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+}
+
+.popup-imagem {
+    max-width: 100%;
+    border-radius: var(--border-radius);
+    object-fit: contain;
+    border: 4px solid var(--primary-color);
+    box-shadow: var(--shadow);
+}
+
+.popup-info {
+    padding-top: 0.5rem;
+}
+
+.popup-info h2 {
+    margin-top: 0;
+    font-size: 2rem;
+    color: var(--secondary-color);
+    border-bottom: 2px solid var(--primary-color);
+    display: inline-block;
+    padding-bottom: 0.3rem;
+}
+
+.popup-info p {
+    margin: 0.4rem 0;
+    font-size: 1rem;
+    color: #444;
+}
+
+/* ---------------- Responsividade ---------------- */
+@media (max-width: 700px) {
+    .popup-visualizacao,
+    .formulario-popup {
+        padding: 1rem;
+        width: 95%;
+    }
+
+    .popup-info h2 {
+        font-size: 1.6rem;
+    }
+
+    .cartao-imagem {
+        height: 180px;
+    }
 }
