@@ -21,12 +21,15 @@ let direcaoOrdenacao = 'decrescente';
 function atualizarFiltros() {
     const artistaSelecionado = selecaoFiltroArtista.value;
     const periodoSelecionado = selecaoFiltroPeriodo.value;
+    const paisSelecionado = selecaoFiltroPais.value;
 
     ui.preencherSelect(selecaoFiltroArtista, estado.obterValoresUnicos('autor'), "Todos os artistas");
     ui.preencherSelect(selecaoFiltroPeriodo, estado.obterValoresUnicos('periodo'), "Todos os períodos");
     ui.preencherSelect(selecaoFiltroPais, estado.obterValoresUnicos('pais'), "Todos os países");
+    
     selecaoFiltroArtista.value = artistaSelecionado;
     selecaoFiltroPeriodo.value = periodoSelecionado;
+    selecaoFiltroPais.value = paisSelecionado;
 }
 
 function atualizarUI() {
@@ -43,23 +46,76 @@ function atualizarUI() {
     ui.renderizarGaleria(painelGaleria, templateCartao, filtradasEOrdenadas);
 }
 
+// Alternar tema claro/escuro
+const botaoTema = document.getElementById("toggleTema");
+
+function alternarTema() {
+  document.body.classList.toggle("dark-theme");
+
+  if (document.body.classList.contains("dark-theme")) {
+    botaoTema.textContent = "☀️";
+  } else {
+    botaoTema.textContent = "🌙";
+  }
+
+  localStorage.setItem("tema", document.body.classList.contains("dark-theme") ? "escuro" : "claro");
+}
+
+botaoTema.addEventListener("click", alternarTema);
+
+window.addEventListener("DOMContentLoaded", () => {
+  const temaSalvo = localStorage.getItem("tema");
+  if (temaSalvo === "escuro") {
+    document.body.classList.add("dark-theme");
+    botaoTema.textContent = "☀️";
+  }
+});
+
+
+// ---------------- Overlay ----------------
+function abrirOverlay() {
+    let overlay = document.querySelector('.popup-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.classList.add('popup-overlay');
+        document.body.appendChild(overlay);
+    }
+    requestAnimationFrame(() => overlay.classList.add('is-active'));
+    return overlay;
+}
+
+function fecharOverlay() {
+    const overlay = document.querySelector('.popup-overlay');
+    if (overlay) {
+        overlay.classList.remove('is-active');
+        overlay.addEventListener('transitionend', () => {
+            if (!overlay.classList.contains('is-active')) {
+                overlay.remove();
+            }
+        }, { once: true });
+    }
+}
+
+// ---------------- Ordenação ----------------
 function alternarDirecaoOrdenacao() {
     direcaoOrdenacao = direcaoOrdenacao === 'crescente' ? 'decrescente' : 'crescente';
-    botaoDirecao.textContent = direcaoOrdenacao === 'crescente' ? '↑' : '↓';
-    const direcaoTexto = direcaoOrdenacao;
-    botaoDirecao.title = `Alternar para ordem ${direcaoTexto}`;
+    botaoDirecao.textContent = direcaoOrdenacao === 'decrescente' ? '↑' : '↓';
+    botaoDirecao.title = `Alternar para ordem ${direcaoOrdenacao}`;
     atualizarUI();
 }
 
+// ---------------- Formulário ----------------
 function abrirFormularioDeAdicionarObra() {
-    const formulario = ui.exibirFormulario(painelGaleria, templateFormulario);
+    const overlay = abrirOverlay();
+    const formulario = ui.exibirFormulario(overlay, templateFormulario);
     formulario.addEventListener('submit', salvarAdicionamentoDeObra);
 }
 
 function abrirFormularioDeEditarObra(idObra) {
     const obra = estado.obterObraPorId(idObra);
     if (obra) {
-        const formulario = ui.exibirFormulario(painelGaleria, templateFormulario, obra);
+        const overlay = abrirOverlay();
+        const formulario = ui.exibirFormulario(overlay, templateFormulario, obra);
         formulario.addEventListener('submit', (evento) => {
             salvarEdicaoDeObra(evento, idObra);
         });
@@ -70,20 +126,24 @@ function salvarAdicionamentoDeObra(evento) {
     evento.preventDefault();
     const formulario = evento.target;
     const dadosObra = ui.obterValoresFormulario(formulario);
-
-    estado.adicionarObra(dadosObra);
-    atualizarFiltros();
-    atualizarUI();
+    if (dadosObra) {
+        estado.adicionarObra(dadosObra);
+        atualizarFiltros();
+        atualizarUI();
+        fecharOverlay();
+    }
 }
 
 function salvarEdicaoDeObra(evento, idObra) {
     evento.preventDefault();
     const formulario = evento.target;
     const dadosObra = ui.obterValoresFormulario(formulario);
-
-    estado.atualizarObra(idObra, dadosObra);
-    atualizarFiltros();
-    atualizarUI();
+    if (dadosObra) {
+        estado.atualizarObra(idObra, dadosObra);
+        atualizarFiltros();
+        atualizarUI();
+        fecharOverlay();
+    }
 }
 
 function confirmarDeletarObra(idObra) {
@@ -125,22 +185,44 @@ function limparGaleria() {
     }
 }
 
+// ---------------- Popup de Visualização ----------------
+function abrirPopupVisualizacao(idObra) {
+    const obra = estado.obterObraPorId(idObra);
+    if (obra) {
+        const overlay = abrirOverlay();
+        ui.exibirPopupVisualizacao(overlay, obra);
+    }
+}
+
+function fecharPopupVisualizacao() {
+    fecharOverlay();
+    atualizarUI();
+}
+
+// ---------------- Eventos ----------------
 document.addEventListener('click', (evento) => {
     const alvo = evento.target;
 
-    if (alvo.id === 'botaoCancelar' && alvo.closest('form')) {
-        atualizarUI();
+    if (alvo.id === 'botaoCancelar') {
+        fecharOverlay();
         return; 
     }
 
     const cartao = alvo.closest('.cartao');
     if (cartao) {
         const idObra = parseInt(cartao.dataset.id, 10);
+        
         if (alvo.classList.contains('botao-editar')) {
             abrirFormularioDeEditarObra(idObra);
         } else if (alvo.classList.contains('botao-deletar')) {
             confirmarDeletarObra(idObra);
+        } else {
+            abrirPopupVisualizacao(idObra);
         }
+    }
+
+    if (alvo.classList.contains('popup-fechar') || alvo.classList.contains('popup-overlay')) {
+        fecharPopupVisualizacao();
     }
 });
 
